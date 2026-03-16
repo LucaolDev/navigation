@@ -7,41 +7,45 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import lucaol.com.github.navigation.ui.theme.NavigationTheme
+import androidx.navigation.compose.rememberNavController
+import lucaol.com.github.navigation.screens.LoginScreen
+import lucaol.com.github.navigation.screens.MenuScreen
+import lucaol.com.github.navigation.screens.PedidosScreen
+import lucaol.com.github.navigation.screens.PerfilScreen
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            NavigationTheme {
+            navigationTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    LoginScreen(modifier = Modifier.padding(innerPadding))
+                    val navController = rememberNavController()
+
+                    NavHost(
+                        navController = navController,
+                        startDestination = "login",
+                    ) {
+                        composable(route = "login") {
+                            LoginScreen(modifier = Modifier.padding(innerPadding))
+                        }
+                        composable(route = "menu") {
+                            MenuScreen(modifier = Modifier.padding(innerPadding))
+                        }
+                        composable(route = "pedidos") {
+                            PedidosScreen(modifier = Modifier.padding(innerPadding))
+                        }
+                        composable(route = "perfil") {
+                            PerfilScreen(modifier = Modifier.padding(innerPadding))
+                        }
+                    }
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    NavigationTheme {
-        Greeting("Android")
-    }
-}
